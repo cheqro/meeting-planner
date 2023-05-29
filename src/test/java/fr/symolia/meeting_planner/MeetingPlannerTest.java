@@ -66,7 +66,6 @@ class MeetingPlannerTest {
 		for (Meeting meeting : meetings) {
 
 			Room bestRoom = meetingPlanner.findBestRoomForMeeting(meeting);
-			System.out.println("bestRoom : " + bestRoom);
 
 			if (!meetingScheduledSuccessfully.contains(meeting.getName())) {
 				Assertions.assertNull(bestRoom);

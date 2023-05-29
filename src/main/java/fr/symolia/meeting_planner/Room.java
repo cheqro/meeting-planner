@@ -41,58 +41,40 @@ public class Room {
 		meetings.remove(meeting);
 	}
 
+	// Check if the room is reserved during the specified time
 	public boolean isReserved(LocalTime startTime, LocalTime endTime) {
 		for (Meeting meeting : meetings) {
-			if (meeting.getStartTime().equals(startTime) || meeting.getEndTime().equals(endTime)) {
-//				System.out.println("startTime " + startTime);
-//				System.out.println("meeting.getStartTime() " + meeting.getStartTime());
+			LocalTime meetingStartTime = meeting.getStartTime();
+			LocalTime meetingEndTime = meeting.getEndTime();
+
+			// True if there is a meeting with the same start or end time
+			if (meetingStartTime.equals(startTime) || meetingEndTime.equals(endTime)) {
 				return true;
 			}
-			if (meeting.getStartTime().isBefore(endTime) && meeting.getEndTime().isAfter(startTime)) {
+
+			// True if there is a meeting between the given start and end time
+			if (meetingStartTime.isBefore(endTime) && meetingEndTime.isAfter(startTime)) {
+				return true;
+			}
+
+			// Check if the room is available 1 hour before the next reservation
+			// If there is a meeting scheduled after the new meeting
+			// Verify that the new meeting ends at least one hour before the next meeting
+
+			if (meetingEndTime.isAfter(endTime) && endTime.plusHours(1).isAfter(meetingStartTime)) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
 	public boolean hasEquipment(ResourceType requiredEquipment) {
-		System.err.println(requiredEquipment + "  <<>>" + equipment.contains(requiredEquipment));
 		return equipment.contains(requiredEquipment);
 	}
 
 	public boolean hasCapacity(int minCapacity) {
 		return capacity >= minCapacity;
-	}
-
-	@Override
-	public String toString() {
-		return "Room " + name;
-	}
-
-	public boolean isRoomAvailable(LocalTime startTime) {
-		for (Meeting meeting : meetings) {
-			if (meeting.getStartTime().equals(startTime)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean getNextReservationTime(LocalTime endTime) {
-		boolean nextReservation = true;
-
-		for (Meeting meeting : meetings) {
-			LocalTime meetingEndTime = meeting.getEndTime();
-			LocalTime meetingStartTime = meeting.getStartTime();
-
-			if (meetingEndTime.isAfter(endTime)) {
-				if (endTime.plusHours(1).isAfter(meetingStartTime)) {
-					nextReservation = false;
-				}
-			}
-		}
-
-		return nextReservation;
 	}
 
 	public void addMeetings(Meeting meetings) {
@@ -101,6 +83,12 @@ public class Room {
 
 	public boolean hasMeeting(Meeting meeting) {
 		return meetings.contains(meeting);
+	}
+
+	// toString() from Meeting
+	@Override
+	public String toString() {
+		return "Room (" + name + ", " + capacity + ", " + equipment + ", " + meetings + ")";
 	}
 
 }

@@ -57,9 +57,10 @@ public class Meeting {
 		this.numberOfPeople = numberOfPeople;
 	}
 
+	// toString() from Meeting
 	@Override
 	public String toString() {
-		return "Réunion : " + name;
+		return "Meeting (" + name + ", " + type + ", " + numberOfPeople + ", " + startTime + ", " + endTime + ")";
 	}
 
 }
