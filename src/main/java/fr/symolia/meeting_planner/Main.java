@@ -51,7 +51,7 @@ public class Main {
 		// Print the best room; otherwise, print null.
 		for (Meeting meeting : meetings) {
 			Room bestRoom = meetingPlanner.findBestRoomForMeeting(meeting);
-			System.out.println("the best room for the meeting " + meeting + " : " + bestRoom);
+			System.out.println("The best meeting room " + meeting + " is : " + bestRoom);
 		}
 	}
 }
