@@ -20,3 +20,5 @@ Copy code
 mvn package
 
 run the Main class or Unit test ...
+Here is the result of the Main class
+image.png
